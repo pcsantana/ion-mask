@@ -35,13 +35,15 @@ export class IonInputMaskComponent implements ControlValueAccessor, OnInit {
 
   private value: string;
   private propagateChange = (_: any) => { };
-
+  private propagateTouch = () => { };
 
   constructor() {
     this.ionMaskService = new IonMaskService();
   }
 
-  public registerOnTouched() {}
+  public registerOnTouched(fn: any) {
+    this.propagateTouch = fn;
+  }
 
   public writeValue(obj: string) {
     this.valueIonInput = this.ionMaskService.applyMask(obj, this.mask);
@@ -75,6 +77,7 @@ export class IonInputMaskComponent implements ControlValueAccessor, OnInit {
       this.valueIonInput = '';
       this.onChange();
     }
+    this.propagateTouch();
   }
 
   public keyUpEvent(event) {
